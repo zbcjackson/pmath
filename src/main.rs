@@ -1,5 +1,6 @@
+use std::io;
 use pdf_canvas::graphicsstate::Color;
-use pdf_canvas::{BuiltinFont, Pdf};
+use pdf_canvas::{BuiltinFont, Canvas, Pdf};
 use rand::prelude::ThreadRng;
 use rand::Rng;
 
@@ -22,7 +23,7 @@ struct Formula {
 fn main() {
     let mut formulas: Vec<Formula> = Vec::new();
     let mut rng = rand::thread_rng();
-    for _i in 0..30 {
+    for _i in 0..60 {
         formulas.push(Formula { left: 10 + random(&mut rng, 90), right: 2 + random(&mut rng, 8)});
     }
     print(formulas);
@@ -38,26 +39,36 @@ fn print(formulas: Vec<Formula>) {
     document.set_title("Two-digit and one-digit multiplication");
     document
         .render_page(PAGE_WIDTH, PAGE_HEIGHT, |c| {
-            c.center_text(
-                INTERNAL_CENTER_X,
-                INTERNAL_TOP - 28.0,
-                BuiltinFont::Helvetica,
-                18.0,
-                "Two-digit and one-digit multiplication",
-            )?;
-            let cursor_y = INTERNAL_TOP - 28.0 - 9.0;
-            c.set_stroke_color(Color::rgb(0, 0, 0))?;
-            c.line(INTERNAL_LEFT, cursor_y, INTERNAL_RIGHT, cursor_y)?;
-            c.stroke()?;
-
-            for (index, formula) in formulas.iter().enumerate() {
-                let x = [INTERNAL_LEFT + 20.0, INTERNAL_LEFT + 220.0, INTERNAL_LEFT + 420.0][index % 3];
-                let y = cursor_y - 28.0 * (index / 3 + 1) as f32;
-                c.left_text(x, y, BuiltinFont::Helvetica,14.0, format!("{} x {} = ", formula.left, formula.right).as_str())?;
-            }
-
+            let mut cursor_y = INTERNAL_TOP - 28.0;
+            print_one_test(&formulas[0..30], c, &mut cursor_y)?;
+            cursor_y -= 128.0;
+            print_one_test(&formulas[30..60], c, &mut cursor_y)?;
             Ok(())
         })
         .unwrap();
     document.finish().unwrap();
+}
+
+fn print_one_test(formulas: &[Formula], c: &mut Canvas, cursor_y: &mut f32) -> io::Result<()> {
+    c.center_text(
+        INTERNAL_CENTER_X,
+        *cursor_y,
+        BuiltinFont::Helvetica,
+        18.0,
+        "Two-digit and one-digit multiplication",
+    )?;
+    *cursor_y -= 9.0;
+    c.set_stroke_color(Color::rgb(0, 0, 0))?;
+    c.line(INTERNAL_LEFT, *cursor_y, INTERNAL_RIGHT, *cursor_y)?;
+    c.stroke()?;
+
+    for (index, formula) in formulas.iter().enumerate() {
+        let x = [INTERNAL_LEFT + 20.0, INTERNAL_LEFT + 220.0, INTERNAL_LEFT + 420.0][index % 3];
+        // let y = cursor_y - 28.0 * (index / 3 + 1) as f32;
+        if index % 3 == 0 {
+            *cursor_y -= 28.0;
+        }
+        c.left_text(x, *cursor_y, BuiltinFont::Helvetica, 14.0, format!("{} x {} = ", formula.left, formula.right).as_str())?;
+    }
+    Ok(())
 }
