@@ -36,7 +36,7 @@ fn random(rng: &mut ThreadRng, number: i32) -> i32 {
 
 fn print(formulas: Vec<Formula>) {
     let mut document = Pdf::create("text.pdf").unwrap();
-    document.set_title("Two-digit and one-digit multiplication");
+    document.set_title("Two-digit and one-digit multiplication (5 minutes) ");
     document
         .render_page(PAGE_WIDTH, PAGE_HEIGHT, |c| {
             let mut cursor_y = INTERNAL_TOP - 28.0;
@@ -55,7 +55,7 @@ fn print_one_test(formulas: &[Formula], c: &mut Canvas, cursor_y: &mut f32) -> i
         *cursor_y,
         BuiltinFont::Helvetica,
         18.0,
-        "Two-digit and one-digit multiplication",
+        "Two-digit and one-digit multiplication (5 minutes)",
     )?;
     *cursor_y -= 9.0;
     c.set_stroke_color(Color::rgb(0, 0, 0))?;
