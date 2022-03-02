@@ -20,21 +20,48 @@ struct Formula {
     left: i32,
     right: i32,
 }
+
+impl Formula {
+    fn new(random: &mut Random) -> Formula {
+        Formula {
+            left: random.two_digit_number(),
+            right: random.one_digit_number()
+        }
+    }
+}
+struct Random {
+    rng: ThreadRng,
+}
+
+impl Random {
+    fn new() -> Random {
+        Random {rng: rand::thread_rng()}
+    }
+
+    fn one_digit_number(&mut self) -> i32 {
+        2 + self.random(8)
+    }
+
+    fn two_digit_number(&mut self) -> i32 {
+        10 + self.random( 90)
+    }
+
+    fn random(&mut self, number: i32) -> i32 {
+        (self.rng.gen::<f32>() * number as f32).floor() as i32
+    }
+}
+
 fn main() {
     let mut formulas: Vec<Formula> = Vec::new();
-    let mut rng = rand::thread_rng();
+    let mut random = Random::new();
     for _i in 0..60 {
-        let mut formula = Formula { left: 10 + random(&mut rng, 90), right: 2 + random(&mut rng, 8) };
+        let mut formula = Formula::new(&mut random);
         while formulas.iter().any(|f| f.left == formula.left && f.right == formula.right) {
-            formula = Formula { left: 10 + random(&mut rng, 90), right: 2 + random(&mut rng, 8) };
+            formula = Formula::new(&mut random);
         }
         formulas.push(formula);
     }
     print(formulas);
-}
-
-fn random(rng: &mut ThreadRng, number: i32) -> i32 {
-    (rng.gen::<f32>() * number as f32).floor() as i32
 }
 
 
