@@ -1,4 +1,3 @@
-use crate::random::Random;
 use std::cmp;
 
 pub struct Formula {
@@ -7,12 +6,6 @@ pub struct Formula {
 }
 
 impl Formula {
-    pub(crate) fn new(random: &mut Random) -> Formula {
-        Formula {
-            left: random.two_digit_number(),
-            right: random.one_digit_number()
-        }
-    }
 }
 
 impl PartialEq for Formula {

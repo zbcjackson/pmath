@@ -11,11 +11,18 @@ impl Test {
     }
     pub fn generate(&mut self) {
         for _i in 0..60 {
-            let mut formula = Formula::new(&mut self.random);
+            let mut formula = self.generate_formula();
             while self.formulas.iter().any(|f| formula == *f) {
-                formula = Formula::new(&mut self.random);
+                formula = self.generate_formula();
             }
             self.formulas.push(formula);
+        }
+    }
+
+    fn generate_formula(&mut self) -> Formula {
+        Formula {
+            left: self.random.two_digit_number(),
+            right: self.random.one_digit_number()
         }
     }
 }
