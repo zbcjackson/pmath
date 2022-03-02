@@ -1,5 +1,5 @@
 use crate::{Formula, Test};
-use std::io;
+use std::io::Result;
 use pdf_canvas::graphicsstate::Color;
 use pdf_canvas::{BuiltinFont, Canvas, Pdf};
 
@@ -38,7 +38,25 @@ impl TestPrinter {
         document.finish().unwrap();
     }
 
-    fn print_one_test(&self, formulas: &[Formula], c: &mut Canvas, cursor_y: &mut f32) -> io::Result<()> {
+    fn print_one_test(&self, formulas: &[Formula], c: &mut Canvas, cursor_y: &mut f32) -> Result<()> {
+        Self::print_test_header(c, cursor_y)?;
+        Self::print_formulas(formulas, c, cursor_y)?;
+        Ok(())
+    }
+
+    fn print_formulas(formulas: &[Formula], c: &mut Canvas, cursor_y: &mut f32) -> Result<()> {
+        for (index, formula) in formulas.iter().enumerate() {
+            let x = [INTERNAL_LEFT + 20.0, INTERNAL_LEFT + 220.0, INTERNAL_LEFT + 420.0][index % 3];
+            // let y = cursor_y - 28.0 * (index / 3 + 1) as f32;
+            if index % 3 == 0 {
+                *cursor_y -= 28.0;
+            }
+            c.left_text(x, *cursor_y, BuiltinFont::Helvetica, 14.0, format!("{} x {} = ", formula.left, formula.right).as_str())?;
+        }
+        Ok(())
+    }
+
+    fn print_test_header(c: &mut Canvas, cursor_y: &mut f32) -> Result<()> {
         c.center_text(
             INTERNAL_CENTER_X,
             *cursor_y,
@@ -49,16 +67,6 @@ impl TestPrinter {
         *cursor_y -= 9.0;
         c.set_stroke_color(Color::rgb(0, 0, 0))?;
         c.line(INTERNAL_LEFT, *cursor_y, INTERNAL_RIGHT, *cursor_y)?;
-        c.stroke()?;
-
-        for (index, formula) in formulas.iter().enumerate() {
-            let x = [INTERNAL_LEFT + 20.0, INTERNAL_LEFT + 220.0, INTERNAL_LEFT + 420.0][index % 3];
-            // let y = cursor_y - 28.0 * (index / 3 + 1) as f32;
-            if index % 3 == 0 {
-                *cursor_y -= 28.0;
-            }
-            c.left_text(x, *cursor_y, BuiltinFont::Helvetica, 14.0, format!("{} x {} = ", formula.left, formula.right).as_str())?;
-        }
-        Ok(())
+        c.stroke()
     }
 }
