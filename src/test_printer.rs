@@ -47,7 +47,6 @@ impl TestPrinter {
     fn print_formulas(formulas: &[Formula], c: &mut Canvas, cursor_y: &mut f32) -> Result<()> {
         for (index, formula) in formulas.iter().enumerate() {
             let x = [INTERNAL_LEFT + 20.0, INTERNAL_LEFT + 220.0, INTERNAL_LEFT + 420.0][index % 3];
-            // let y = cursor_y - 28.0 * (index / 3 + 1) as f32;
             if index % 3 == 0 {
                 *cursor_y -= 28.0;
             }
