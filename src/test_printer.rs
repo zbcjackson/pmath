@@ -1,4 +1,4 @@
-use crate::Formula;
+use crate::{Formula, Test};
 use std::io;
 use pdf_canvas::graphicsstate::Color;
 use pdf_canvas::{BuiltinFont, Canvas, Pdf};
@@ -15,13 +15,13 @@ const INTERNAL_TOP: f32 = PAGE_HEIGHT - PAGE_MARGIN;
 const INTERNAL_CENTER_X: f32 = INTERNAL_LEFT + INTERNAL_WIDTH / 2.0;
 // const INTERNAL_CENTER_Y: f32 = INTERNAL_TOP - INTERNAL_HEIGHT / 2.0;
 
-pub struct FormulaPrinter {
-    formulas: Vec<Formula>,
+pub struct TestPrinter {
+    test: Test,
 }
 
-impl FormulaPrinter {
-    pub fn new(formulas: Vec<Formula>) -> FormulaPrinter {
-        FormulaPrinter { formulas }
+impl TestPrinter {
+    pub fn new(test: Test) -> TestPrinter {
+        TestPrinter { test }
     }
     pub(crate) fn print(&self) {
         let mut document = Pdf::create("text.pdf").unwrap();
@@ -29,9 +29,9 @@ impl FormulaPrinter {
         document
             .render_page(PAGE_WIDTH, PAGE_HEIGHT, |c| {
                 let mut cursor_y = INTERNAL_TOP - 28.0;
-                self.print_one_test(&self.formulas[0..30], c, &mut cursor_y)?;
+                self.print_one_test(&self.test.formulas[0..30], c, &mut cursor_y)?;
                 cursor_y -= 128.0;
-                self.print_one_test(&self.formulas[30..60], c, &mut cursor_y)?;
+                self.print_one_test(&self.test.formulas[30..60], c, &mut cursor_y)?;
                 Ok(())
             })
             .unwrap();
