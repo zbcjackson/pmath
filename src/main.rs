@@ -1,8 +1,11 @@
+mod random;
+mod formula;
+
 use std::io;
 use pdf_canvas::graphicsstate::Color;
 use pdf_canvas::{BuiltinFont, Canvas, Pdf};
-use rand::prelude::ThreadRng;
-use rand::Rng;
+use crate::formula::Formula;
+use crate::random::Random;
 
 const PAGE_WIDTH: f32 = 595.0;
 const PAGE_HEIGHT: f32 = 842.0;
@@ -16,47 +19,13 @@ const INTERNAL_TOP: f32 = PAGE_HEIGHT - PAGE_MARGIN;
 const INTERNAL_CENTER_X: f32 = INTERNAL_LEFT + INTERNAL_WIDTH / 2.0;
 // const INTERNAL_CENTER_Y: f32 = INTERNAL_TOP - INTERNAL_HEIGHT / 2.0;
 
-struct Formula {
-    left: i32,
-    right: i32,
-}
-
-impl Formula {
-    fn new(random: &mut Random) -> Formula {
-        Formula {
-            left: random.two_digit_number(),
-            right: random.one_digit_number()
-        }
-    }
-}
-struct Random {
-    rng: ThreadRng,
-}
-
-impl Random {
-    fn new() -> Random {
-        Random {rng: rand::thread_rng()}
-    }
-
-    fn one_digit_number(&mut self) -> i32 {
-        2 + self.random(8)
-    }
-
-    fn two_digit_number(&mut self) -> i32 {
-        10 + self.random( 90)
-    }
-
-    fn random(&mut self, number: i32) -> i32 {
-        (self.rng.gen::<f32>() * number as f32).floor() as i32
-    }
-}
 
 fn main() {
     let mut formulas: Vec<Formula> = Vec::new();
     let mut random = Random::new();
     for _i in 0..60 {
         let mut formula = Formula::new(&mut random);
-        while formulas.iter().any(|f| f.left == formula.left && f.right == formula.right) {
+        while formulas.iter().any(|f| formula == *f) {
             formula = Formula::new(&mut random);
         }
         formulas.push(formula);
