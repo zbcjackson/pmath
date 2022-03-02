@@ -24,7 +24,11 @@ fn main() {
     let mut formulas: Vec<Formula> = Vec::new();
     let mut rng = rand::thread_rng();
     for _i in 0..60 {
-        formulas.push(Formula { left: 10 + random(&mut rng, 90), right: 2 + random(&mut rng, 8)});
+        let mut formula = Formula { left: 10 + random(&mut rng, 90), right: 2 + random(&mut rng, 8) };
+        while formulas.iter().any(|f| f.left == formula.left && f.right == formula.right) {
+            formula = Formula { left: 10 + random(&mut rng, 90), right: 2 + random(&mut rng, 8) };
+        }
+        formulas.push(formula);
     }
     print(formulas);
 }
