@@ -25,7 +25,7 @@ impl TestPrinter {
     }
     pub(crate) fn print(&self) {
         let mut document = Pdf::create("text.pdf").unwrap();
-        document.set_title("Two-digit and one-digit multiplication (5 minutes) ");
+        document.set_title("Two-digit and one-digit multiplication (3 minutes) ");
         document
             .render_page(PAGE_WIDTH, PAGE_HEIGHT, |c| {
                 let mut cursor_y = INTERNAL_TOP - 28.0;
