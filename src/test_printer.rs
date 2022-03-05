@@ -29,9 +29,7 @@ impl TestPrinter {
         document
             .render_page(PAGE_WIDTH, PAGE_HEIGHT, |c| {
                 let mut cursor_y = INTERNAL_TOP - 28.0;
-                self.print_one_test(&self.test.formulas[0..30], c, &mut cursor_y)?;
-                cursor_y -= 128.0;
-                self.print_one_test(&self.test.formulas[30..60], c, &mut cursor_y)?;
+                self.print_one_test(&self.test.formulas, c, &mut cursor_y)?;
                 Ok(())
             })
             .unwrap();
