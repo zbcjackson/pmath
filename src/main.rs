@@ -9,9 +9,13 @@ use crate::random::Random;
 use crate::test::Test;
 
 fn main() {
-    let mut test = Test::new();
-    test.generate();
-    TestPrinter::new(test).print();
+    let mut tests: Vec<Test> = vec![];
+    for _i in 0..3 {
+        let mut test = Test::new();
+        test.generate();
+        tests.push(test);
+    }
+    TestPrinter::new(tests).print();
 }
 
 

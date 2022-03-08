@@ -5,12 +5,13 @@ pub struct Test {
     random: Random,
 }
 
+pub const FORMULA_NUMBER_IN_ONE_PAGE: i32 = 81;
 impl Test {
     pub(crate) fn new() -> Test {
         Test{formulas: Vec::new(), random: Random::new()}
     }
     pub fn generate(&mut self) {
-        for _i in 0..81 {
+        for _i in 0..FORMULA_NUMBER_IN_ONE_PAGE {
             let mut formula = self.generate_formula();
             while self.formulas.iter().any(|f| formula == *f) {
                 formula = self.generate_formula();

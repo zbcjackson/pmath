@@ -16,23 +16,25 @@ const INTERNAL_CENTER_X: f32 = INTERNAL_LEFT + INTERNAL_WIDTH / 2.0;
 // const INTERNAL_CENTER_Y: f32 = INTERNAL_TOP - INTERNAL_HEIGHT / 2.0;
 
 pub struct TestPrinter {
-    test: Test,
+    tests: Vec<Test>,
 }
 
 impl TestPrinter {
-    pub fn new(test: Test) -> TestPrinter {
-        TestPrinter { test }
+    pub fn new(tests: Vec<Test>) -> TestPrinter {
+        TestPrinter { tests }
     }
     pub(crate) fn print(&self) {
         let mut document = Pdf::create("test.pdf").unwrap();
         document.set_title("Two-digit and one-digit multiplication (3 minutes) ");
-        document
-            .render_page(PAGE_WIDTH, PAGE_HEIGHT, |c| {
-                let mut cursor_y = INTERNAL_TOP - 28.0;
-                self.print_one_test(&self.test.formulas, c, &mut cursor_y)?;
-                Ok(())
-            })
-            .unwrap();
+        for test in &self.tests {
+            document
+                .render_page(PAGE_WIDTH, PAGE_HEIGHT, |c| {
+                    let mut cursor_y = INTERNAL_TOP - 28.0;
+                    self.print_one_test(&test.formulas, c, &mut cursor_y)?;
+                    Ok(())
+                })
+                .unwrap();
+        }
         document.finish().unwrap();
     }
 
