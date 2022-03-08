@@ -10,7 +10,7 @@ impl Test {
         Test{formulas: Vec::new(), random: Random::new()}
     }
     pub fn generate(&mut self) {
-        for _i in 0..60 {
+        for _i in 0..81 {
             let mut formula = self.generate_formula();
             while self.formulas.iter().any(|f| formula == *f) {
                 formula = self.generate_formula();

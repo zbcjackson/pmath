@@ -24,7 +24,7 @@ impl TestPrinter {
         TestPrinter { test }
     }
     pub(crate) fn print(&self) {
-        let mut document = Pdf::create("text.pdf").unwrap();
+        let mut document = Pdf::create("test.pdf").unwrap();
         document.set_title("Two-digit and one-digit multiplication (3 minutes) ");
         document
             .render_page(PAGE_WIDTH, PAGE_HEIGHT, |c| {
@@ -59,7 +59,7 @@ impl TestPrinter {
             *cursor_y,
             BuiltinFont::Helvetica,
             18.0,
-            "Two-digit and one-digit multiplication (5 minutes)",
+            "Two-digit and one-digit multiplication (3 minutes)",
         )?;
         *cursor_y -= 9.0;
         c.set_stroke_color(Color::rgb(0, 0, 0))?;
