@@ -59,7 +59,13 @@ impl TestPrinter {
     fn blank_or_value(value: Option<i32>) -> String {
         match value {
             None => { "__".to_string() }
-            Some(v) => { v.to_string() }
+            Some(v) => {
+                if v < 10 {
+                    format!("  {}", v.to_string())
+                } else {
+                    v.to_string()
+                }
+            }
         }
     }
 
