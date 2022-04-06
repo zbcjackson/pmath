@@ -18,6 +18,10 @@ impl Random {
         10 + self.random( 90)
     }
 
+    pub(crate) fn blank_position(&mut self) -> i32 {
+        self.random(3)
+    }
+
     fn random(&mut self, number: i32) -> i32 {
         (self.rng.gen::<f32>() * number as f32).floor() as i32
     }

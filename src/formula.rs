@@ -1,8 +1,9 @@
 use std::cmp;
 
 pub struct Formula {
-    pub(crate) left: i32,
-    pub(crate) right: i32,
+    pub(crate) left: Option<i32>,
+    pub(crate) right: Option<i32>,
+    pub(crate) product: Option<i32>,
 }
 
 impl Formula {

@@ -50,9 +50,17 @@ impl TestPrinter {
             if index % 3 == 0 {
                 *cursor_y -= 28.0;
             }
-            c.left_text(x, *cursor_y, BuiltinFont::Helvetica, 14.0, format!("{} x {} = ", formula.left, formula.right).as_str())?;
+            c.left_text(x, *cursor_y, BuiltinFont::Helvetica, 14.0,
+                        format!("{} x {} = {}", Self::blank_or_value(formula.left), Self::blank_or_value(formula.right), Self::blank_or_value(formula.product)).as_str())?;
         }
         Ok(())
+    }
+
+    fn blank_or_value(value: Option<i32>) -> String {
+        match value {
+            None => { "__".to_string() }
+            Some(v) => { v.to_string() }
+        }
     }
 
     fn print_test_header(c: &mut Canvas, cursor_y: &mut f32) -> Result<()> {

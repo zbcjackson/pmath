@@ -21,9 +21,15 @@ impl Test {
     }
 
     fn generate_formula(&mut self) -> Formula {
-        Formula {
-            left: self.random.two_digit_number(),
-            right: self.random.one_digit_number()
-        }
+        let left = self.random.two_digit_number();
+        let right = self.random.one_digit_number();
+        let product = left * right;
+        let blank = self.random.blank_position();
+        let formula = Formula {
+            left: if blank == 0 {None} else {Some(left)},
+            right: if blank == 1 {None} else {Some(right)},
+            product: if blank == 2 {None} else {Some(product)},
+        };
+        formula
     }
 }
