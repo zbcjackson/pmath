@@ -2,6 +2,7 @@ use crate::{Formula, Test};
 use std::io::Result;
 use pdf_canvas::graphicsstate::Color;
 use pdf_canvas::{BuiltinFont, Canvas, Pdf};
+use crate::formula::Operator;
 
 const PAGE_WIDTH: f32 = 595.0;
 const PAGE_HEIGHT: f32 = 842.0;
@@ -51,19 +52,26 @@ impl TestPrinter {
                 *cursor_y -= 28.0;
             }
             c.left_text(x, *cursor_y, BuiltinFont::Helvetica, 14.0,
-                        format!("{} x {} = {}", Self::blank_or_value(formula.left), Self::blank_or_value(formula.right), Self::blank_or_value(formula.product)).as_str())?;
+                        format!("{} {} {} = {}", Self::blank_or_value(formula.left), Self::operator(formula.operator), Self::blank_or_value(formula.right), Self::blank_or_value(formula.result)).as_str())?;
         }
         Ok(())
     }
 
-    fn blank_or_value(value: Option<i32>) -> String {
+    fn operator(operator: Operator) -> String {
+        match operator {
+            Operator::Add => {"+".to_string()}
+            Operator::Multiple => {"×".to_string()}
+        }
+    }
+
+    fn blank_or_value(value: Option<f32>) -> String {
         match value {
             None => { "__".to_string() }
             Some(v) => {
-                if v < 10 {
-                    format!("  {}", v.to_string())
+                if v < 10.0 {
+                    format!("  {:.2}", v).trim_end_matches(['.', '0']).to_string()
                 } else {
-                    v.to_string()
+                    format!("{:.2}", v).trim_end_matches(['.', '0']).to_string()
                 }
             }
         }

@@ -1,9 +1,16 @@
 use std::cmp;
 
+#[derive(PartialEq, Copy, Clone)]
+pub enum Operator {
+    Add,
+    Multiple,
+}
+
 pub struct Formula {
-    pub(crate) left: Option<i32>,
-    pub(crate) right: Option<i32>,
-    pub(crate) product: Option<i32>,
+    pub(crate) left: Option<f32>,
+    pub(crate) operator: Operator,
+    pub(crate) right: Option<f32>,
+    pub(crate) result: Option<f32>,
 }
 
 impl Formula {
@@ -11,7 +18,7 @@ impl Formula {
 
 impl PartialEq for Formula {
     fn eq(&self, other: &Self) -> bool {
-        self.left == other.left && self.right == other.right
+        self.left == other.left && self.right == other.right && self.operator == other.operator
     }
 }
 
