@@ -37,3 +37,28 @@ impl Random {
         (self.rng.gen::<f32>() * number as f32).floor()
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use crate::Random;
+
+    #[test]
+    fn one_digit_number() {
+        let mut random = Random::new();
+        for _ in 0..1000 {
+            let n = random.one_digit_number();
+            assert_eq!(n.fract(), 0.0);
+            assert!(n >= 2.0, "n = {}", n);
+        }
+    }
+
+    #[test]
+    fn two_digit_number() {
+        let mut random = Random::new();
+        for _ in 0..1000 {
+            let n = random.two_digit_number();
+            assert_eq!(n.fract(), 0.0);
+            assert!(n >= 10.0, "n = {}", n);
+        }
+    }
+}

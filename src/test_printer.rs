@@ -69,9 +69,9 @@ impl TestPrinter {
             None => { "__".to_string() }
             Some(v) => {
                 if v < 10.0 {
-                    format!("  {:.2}", v).trim_end_matches(['.', '0']).to_string()
+                    format!("  {:.2}", v).trim_end_matches(".00").to_string()
                 } else {
-                    format!("{:.2}", v).trim_end_matches(['.', '0']).to_string()
+                    format!("{:.2}", v).trim_end_matches(".00").to_string()
                 }
             }
         }
