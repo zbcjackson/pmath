@@ -47,7 +47,7 @@ impl TestPrinter {
 
     fn print_formulas(formulas: &[Formula], c: &mut Canvas, cursor_y: &mut f32) -> Result<()> {
         for (index, formula) in formulas.iter().enumerate() {
-            let x = [INTERNAL_LEFT + 20.0, INTERNAL_LEFT + 220.0, INTERNAL_LEFT + 420.0][index % 3];
+            let x = [INTERNAL_LEFT + 10.0, INTERNAL_LEFT + 210.0, INTERNAL_LEFT + 410.0][index % 3];
             if index % 3 == 0 {
                 *cursor_y -= 28.0;
             }
@@ -66,7 +66,7 @@ impl TestPrinter {
 
     fn blank_or_value(value: Option<f32>) -> String {
         match value {
-            None => { "__".to_string() }
+            None => { "_____".to_string() }
             Some(v) => {
                 if v < 10.0 {
                     format!("  {:.2}", v).trim_end_matches(".00").to_string()
